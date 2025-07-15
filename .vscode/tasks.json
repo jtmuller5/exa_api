@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Runner",
+      "type": "shell",
+      "command": "flutter pub run build_runner build --delete-conflicting-outputs",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+       "icon": {
+        "id": "tools",
+        "color": "terminal.ansiBlue"
+      },
+    },
+    {
+      "label": "Dry Run",
+      "type": "shell",
+      "command": "flutter pub publish --dry-run",
+      "problemMatcher": [],
+      "icon": {
+        "id": "check-all",
+        "color": "terminal.ansiYellow"
+      },
+    },
+    {
+      "label": "Publish",
+      "type": "shell",
+      "command": "flutter pub publish",
+      "problemMatcher": [],
+      "icon": {
+        "id": "rocket",
+        "color": "terminal.ansiGreen"
+      },
+    }
+  ]
+}
