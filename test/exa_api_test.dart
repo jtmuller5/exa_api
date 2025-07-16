@@ -4,13 +4,10 @@ import 'package:exa_api/exa_api.dart';
 void main() {
   group('ExaApi Tests', () {
     late ExaApi exa;
-    
+
     setUp(() {
       // Note: Replace with your actual API key for testing
-      exa = ExaApi(
-        apiKey: 'test_api_key',
-        debugMode: true,
-      );
+      exa = ExaApi(apiKey: 'test_api_key', debugMode: true);
     });
 
     group('Initialization', () {
@@ -20,10 +17,7 @@ void main() {
       });
 
       test('should throw assertion error with empty API key', () {
-        expect(
-          () => ExaApi(apiKey: ''),
-          throwsA(isA<AssertionError>()),
-        );
+        expect(() => ExaApi(apiKey: ''), throwsA(isA<AssertionError>()));
       });
     });
 
@@ -75,10 +69,7 @@ void main() {
 
     group('Search Configuration', () {
       test('should create TextConfig with parameters', () {
-        final config = TextConfig(
-          maxCharacters: 1000,
-          includeHtmlTags: true,
-        );
+        final config = TextConfig(maxCharacters: 1000, includeHtmlTags: true);
 
         expect(config.maxCharacters, equals(1000));
         expect(config.includeHtmlTags, isTrue);
@@ -174,31 +165,34 @@ void main() {
         expect(request.startPublishedDate, equals(DateTime(2023, 1, 1)));
       });
 
-      test('should serialize FindSimilarRequest to JSON with date formatting', () {
-        final request = FindSimilarRequest(
-          url: 'https://example.com',
-          numResults: 5,
-          startPublishedDate: DateTime(2023, 1, 1),
-        );
+      test(
+        'should serialize FindSimilarRequest to JSON with date formatting',
+        () {
+          final request = FindSimilarRequest(
+            url: 'https://example.com',
+            numResults: 5,
+            startPublishedDate: DateTime(2023, 1, 1),
+          );
 
-        final json = request.toJson();
-        expect(json['url'], equals('https://example.com'));
-        expect(json['numResults'], equals(5));
-        expect(json['startPublishedDate'], equals('2023-01-01T00:00:00.000'));
-      });
+          final json = request.toJson();
+          expect(json['url'], equals('https://example.com'));
+          expect(json['numResults'], equals(5));
+          expect(json['startPublishedDate'], equals('2023-01-01T00:00:00.000'));
+        },
+      );
     });
 
     group('Get Contents Models', () {
       test('should create ContentsRequest with parameters', () {
         final request = ContentsRequest(
-          urls: ['https://example.com'],
+          ids: ['https://example.com'],
           text: true,
           highlights: const HighlightsConfig(numSentences: 2),
           livecrawl: LivecrawlOption.fallback,
           subpages: 1,
         );
 
-        expect(request.urls, equals(['https://example.com']));
+        expect(request.ids, equals(['https://example.com']));
         expect(request.text, isTrue);
         expect(request.highlights?.numSentences, equals(2));
         expect(request.livecrawl, equals(LivecrawlOption.fallback));
@@ -272,10 +266,7 @@ void main() {
         final breakdown = CostBreakdown(
           search: 0.005,
           contents: 0.001,
-          breakdown: {
-            'neuralSearch': 0.005,
-            'contentText': 0.001,
-          },
+          breakdown: {'neuralSearch': 0.005, 'contentText': 0.001},
         );
 
         expect(breakdown.search, equals(0.005));
@@ -294,19 +285,18 @@ void main() {
               breakdown: {'neuralSearch': 0.005},
             ),
           ],
-          perRequestPrices: {
-            'neuralSearch_1_25_results': 0.005,
-          },
-          perPagePrices: {
-            'contentText': 0.001,
-          },
+          perRequestPrices: {'neuralSearch_1_25_results': 0.005},
+          perPagePrices: {'contentText': 0.001},
         );
 
         expect(cost.total, equals(0.006));
-        expect(cost.breakDown.length, equals(1));
-        expect(cost.breakDown[0].search, equals(0.005));
-        expect(cost.perRequestPrices['neuralSearch_1_25_results'], equals(0.005));
-        expect(cost.perPagePrices['contentText'], equals(0.001));
+        expect((cost.breakDown ?? []).length, equals(1));
+        expect((cost.breakDown ?? [])[0].search, equals(0.005));
+        expect(
+          cost.perRequestPrices?['neuralSearch_1_25_results'],
+          equals(0.005),
+        );
+        expect(cost.perPagePrices?['contentText'], equals(0.001));
       });
     });
 
@@ -325,10 +315,16 @@ void main() {
 
       test('should format ExaApiException toString correctly', () {
         final exception1 = ExaApiException('Test error message');
-        expect(exception1.toString(), equals('ExaApiException: Test error message'));
+        expect(
+          exception1.toString(),
+          equals('ExaApiException: Test error message'),
+        );
 
         final exception2 = ExaApiException('Test error message', 400);
-        expect(exception2.toString(), equals('ExaApiException: Test error message (Status: 400)'));
+        expect(
+          exception2.toString(),
+          equals('ExaApiException: Test error message (Status: 400)'),
+        );
       });
     });
 
@@ -342,8 +338,14 @@ void main() {
       test('should have correct SearchCategory values', () {
         expect(SearchCategory.researchPaper.apiValue, equals('research paper'));
         expect(SearchCategory.personalSite.apiValue, equals('personal site'));
-        expect(SearchCategory.linkedinProfile.apiValue, equals('linkedin profile'));
-        expect(SearchCategory.financialReport.apiValue, equals('financial report'));
+        expect(
+          SearchCategory.linkedinProfile.apiValue,
+          equals('linkedin profile'),
+        );
+        expect(
+          SearchCategory.financialReport.apiValue,
+          equals('financial report'),
+        );
         expect(SearchCategory.company.apiValue, equals('company'));
         expect(SearchCategory.news.apiValue, equals('news'));
         expect(SearchCategory.pdf.apiValue, equals('pdf'));

@@ -10,10 +10,6 @@ ContentsRequest _$ContentsRequestFromJson(
   Map<String, dynamic> json,
 ) => $checkedCreate('ContentsRequest', json, ($checkedConvert) {
   final val = ContentsRequest(
-    urls: $checkedConvert(
-      'urls',
-      (v) => (v as List<dynamic>).map((e) => e as String).toList(),
-    ),
     ids: $checkedConvert(
       'ids',
       (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -59,7 +55,6 @@ ContentsRequest _$ContentsRequestFromJson(
 
 Map<String, dynamic> _$ContentsRequestToJson(ContentsRequest instance) =>
     <String, dynamic>{
-      'urls': instance.urls,
       'ids': instance.ids,
       'textConfig': instance.textConfig?.toJson(),
       'highlights': instance.highlights?.toJson(),

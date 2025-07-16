@@ -12,10 +12,7 @@ class ExaApiExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Exa API Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
       home: const ExaApiDemo(),
     );
   }
@@ -32,7 +29,7 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
   final _queryController = TextEditingController();
   final _urlController = TextEditingController();
   final _apiKeyController = TextEditingController();
-  
+
   ExaApi? _exa;
   bool _isLoading = false;
   String _result = '';
@@ -42,17 +39,15 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
   void initState() {
     super.initState();
     _queryController.text = 'Latest developments in AI';
-    _urlController.text = 'https://arxiv.org/abs/2307.06435';
+    _urlController.text = 'https://arxiv.org/abs/1706.03762';
     // Note: In a real app, you'd store the API key securely
     _apiKeyController.text = 'YOUR_EXA_API_KEY_HERE';
   }
 
   void _initializeExa() {
-    if (_apiKeyController.text.isNotEmpty && _apiKeyController.text != 'YOUR_EXA_API_KEY_HERE') {
-      _exa = ExaApi(
-        apiKey: _apiKeyController.text,
-        debugMode: true,
-      );
+    if (_apiKeyController.text.isNotEmpty &&
+        _apiKeyController.text != 'YOUR_EXA_API_KEY_HERE') {
+      _exa = ExaApi(apiKey: _apiKeyController.text, debugMode: true);
     }
   }
 
@@ -85,46 +80,48 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
           numSentences: 2,
           highlightsPerUrl: 1,
         ),
-        summary: const SummaryConfig(
-          query: 'Key findings and main points',
-        ),
+        summary: const SummaryConfig(query: 'Key findings and main points'),
         maxCharacters: 1000,
       );
 
       final buffer = StringBuffer();
       buffer.writeln('🔍 Search Results for: "${_queryController.text}"');
-      buffer.writeln('Search Type: ${results.resolvedSearchType.name}');
+      buffer.writeln('Search Type: ${results.resolvedSearchType?.name}');
       buffer.writeln('Total Results: ${results.results.length}');
-      
+
       if (results.costDollars != null) {
-        buffer.writeln('Cost: \$${results.costDollars!.total.toStringAsFixed(4)}');
+        buffer.writeln(
+          'Cost: \$${(results.costDollars!.total ?? 0).toStringAsFixed(4)}',
+        );
       }
-      
-      buffer.writeln('\n' + '='*50 + '\n');
+
+      buffer.writeln('\n' + '=' * 50 + '\n');
 
       for (int i = 0; i < results.results.length; i++) {
         final result = results.results[i];
         buffer.writeln('${i + 1}. ${result.title}');
         buffer.writeln('   URL: ${result.url}');
         buffer.writeln('   Author: ${result.author ?? 'Unknown'}');
-        buffer.writeln('   Score: ${result.score?.toStringAsFixed(3) ?? 'N/A'}');
-        
+        buffer.writeln(
+          '   Score: ${result.score?.toStringAsFixed(3) ?? 'N/A'}',
+        );
+
         if (result.summary != null) {
           buffer.writeln('   Summary: ${result.summary}');
         }
-        
+
         if (result.highlights != null && result.highlights!.isNotEmpty) {
           buffer.writeln('   Highlights: ${result.highlights!.join(' | ')}');
         }
-        
+
         if (result.text != null) {
-          final text = result.text!.length > 200 
+          final text = result.text!.length > 200
               ? '${result.text!.substring(0, 200)}...'
               : result.text!;
           buffer.writeln('   Content: $text');
         }
-        
-        buffer.writeln('\n' + '-'*30 + '\n');
+
+        buffer.writeln('\n' + '-' * 30 + '\n');
       }
 
       setState(() {
@@ -168,21 +165,21 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
       buffer.writeln('❓ Question: "${_queryController.text}"');
       buffer.writeln('\n🤖 Answer: ${answer.answer}');
       buffer.writeln('\n📚 Sources (${answer.citations.length}):');
-      
+
       for (int i = 0; i < answer.citations.length; i++) {
         final citation = answer.citations[i];
         buffer.writeln('${i + 1}. ${citation.title}');
         buffer.writeln('   URL: ${citation.url}');
         buffer.writeln('   Author: ${citation.author ?? 'Unknown'}');
-        
+
         if (citation.text != null) {
-          final text = citation.text!.length > 200 
+          final text = citation.text!.length > 200
               ? '${citation.text!.substring(0, 200)}...'
               : citation.text!;
           buffer.writeln('   Content: $text');
         }
-        
-        buffer.writeln('\n' + '-'*30 + '\n');
+
+        buffer.writeln('\n' + '-' * 30 + '\n');
       }
 
       setState(() {
@@ -218,15 +215,13 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
 
     try {
       final contents = await _exa!.getContentsSimple(
-        urls: [_urlController.text],
+        ids: [_urlController.text],
         text: true,
         highlights: const HighlightsConfig(
           numSentences: 3,
           highlightsPerUrl: 2,
         ),
-        summary: const SummaryConfig(
-          query: 'What are the main points?',
-        ),
+        summary: const SummaryConfig(query: 'What are the main points?'),
         maxCharacters: 2000,
       );
 
@@ -234,33 +229,35 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
       buffer.writeln('📄 Content for: ${_urlController.text}');
       buffer.writeln('Request ID: ${contents.requestId}');
       buffer.writeln('Total Results: ${contents.results.length}');
-      buffer.writeln('\n' + '='*50 + '\n');
+      buffer.writeln('\n' + '=' * 50 + '\n');
 
       for (final result in contents.results) {
         buffer.writeln('Title: ${result.title}');
         buffer.writeln('URL: ${result.url}');
         buffer.writeln('Author: ${result.author ?? 'Unknown'}');
-        buffer.writeln('Published: ${result.publishedDate?.toString() ?? 'Unknown'}');
-        
+        buffer.writeln(
+          'Published: ${result.publishedDate?.toString() ?? 'Unknown'}',
+        );
+
         if (result.summary != null) {
           buffer.writeln('\nSummary: ${result.summary}');
         }
-        
+
         if (result.highlights != null && result.highlights!.isNotEmpty) {
           buffer.writeln('\nHighlights:');
           for (int i = 0; i < result.highlights!.length; i++) {
             buffer.writeln('  ${i + 1}. ${result.highlights![i]}');
           }
         }
-        
+
         if (result.text != null) {
-          final text = result.text!.length > 500 
+          final text = result.text!.length > 500
               ? '${result.text!.substring(0, 500)}...'
               : result.text!;
           buffer.writeln('\nContent: $text');
         }
-        
-        buffer.writeln('\n' + '-'*30 + '\n');
+
+        buffer.writeln('\n' + '-' * 30 + '\n');
       }
 
       setState(() {
@@ -300,13 +297,8 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
         numResults: 3,
         contents: const ContentsConfig(
           text: true,
-          highlights: HighlightsConfig(
-            numSentences: 2,
-            highlightsPerUrl: 1,
-          ),
-          summary: SummaryConfig(
-            query: 'Main topic and key insights',
-          ),
+          highlights: HighlightsConfig(numSentences: 2, highlightsPerUrl: 1),
+          summary: SummaryConfig(query: 'Main topic and key insights'),
         ),
       );
 
@@ -314,31 +306,33 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
       buffer.writeln('🔗 Similar links to: ${_urlController.text}');
       buffer.writeln('Request ID: ${similar.requestId}');
       buffer.writeln('Total Results: ${similar.results.length}');
-      buffer.writeln('\n' + '='*50 + '\n');
+      buffer.writeln('\n' + '=' * 50 + '\n');
 
       for (int i = 0; i < similar.results.length; i++) {
         final result = similar.results[i];
         buffer.writeln('${i + 1}. ${result.title}');
         buffer.writeln('   URL: ${result.url}');
         buffer.writeln('   Author: ${result.author ?? 'Unknown'}');
-        buffer.writeln('   Similarity Score: ${result.score?.toStringAsFixed(3) ?? 'N/A'}');
-        
+        buffer.writeln(
+          '   Similarity Score: ${result.score?.toStringAsFixed(3) ?? 'N/A'}',
+        );
+
         if (result.summary != null) {
           buffer.writeln('   Summary: ${result.summary}');
         }
-        
+
         if (result.highlights != null && result.highlights!.isNotEmpty) {
           buffer.writeln('   Highlights: ${result.highlights!.join(' | ')}');
         }
-        
+
         if (result.text != null) {
-          final text = result.text!.length > 200 
+          final text = result.text!.length > 200
               ? '${result.text!.substring(0, 200)}...'
               : result.text!;
           buffer.writeln('   Content: $text');
         }
-        
-        buffer.writeln('\n' + '-'*30 + '\n');
+
+        buffer.writeln('\n' + '-' * 30 + '\n');
       }
 
       setState(() {
@@ -354,9 +348,9 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -390,7 +384,7 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
               obscureText: true,
             ),
           ),
-          
+
           // Tab Navigation
           Container(
             color: Theme.of(context).colorScheme.surface,
@@ -403,7 +397,7 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
               ],
             ),
           ),
-          
+
           // Input Fields
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -413,9 +407,13 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
                   TextField(
                     controller: _queryController,
                     decoration: InputDecoration(
-                      labelText: _selectedTab == 0 ? 'Search Query' : 'Question',
+                      labelText: _selectedTab == 0
+                          ? 'Search Query'
+                          : 'Question',
                       border: const OutlineInputBorder(),
-                      prefixIcon: Icon(_selectedTab == 0 ? Icons.search : Icons.question_mark),
+                      prefixIcon: Icon(
+                        _selectedTab == 0 ? Icons.search : Icons.question_mark,
+                      ),
                     ),
                     maxLines: 2,
                   ),
@@ -434,7 +432,7 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _getActionForTab(),
-                    child: _isLoading 
+                    child: _isLoading
                         ? const SizedBox(
                             width: 20,
                             height: 20,
@@ -446,7 +444,7 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
               ],
             ),
           ),
-          
+
           // Results
           Expanded(
             child: Container(
@@ -460,10 +458,7 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
                   ? const Center(
                       child: Text(
                         'Results will appear here',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                     )
                   : SingleChildScrollView(
@@ -490,10 +485,14 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+            color: isSelected
+                ? Theme.of(context).primaryColor
+                : Colors.transparent,
             border: Border(
               bottom: BorderSide(
-                color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+                color: isSelected
+                    ? Theme.of(context).primaryColor
+                    : Colors.transparent,
                 width: 2,
               ),
             ),

@@ -267,10 +267,10 @@ class CostDollars {
     required this.perPagePrices,
   });
 
-  final double total;
-  final List<CostBreakdown> breakDown;
-  final Map<String, double> perRequestPrices;
-  final Map<String, double> perPagePrices;
+  final double? total;
+  final List<CostBreakdown>? breakDown;
+  final Map<String, double>? perRequestPrices;
+  final Map<String, double>? perPagePrices;
 
   factory CostDollars.fromJson(Map<String, dynamic> json) =>
       _$CostDollarsFromJson(json);
@@ -330,7 +330,7 @@ class SearchResponse {
   });
 
   final String requestId;
-  final SearchType resolvedSearchType;
+  final SearchType? resolvedSearchType;
   final List<SearchResult> results;
   final SearchType? searchType;
   final String? context;

@@ -6,9 +6,9 @@ part 'get-contents.g.dart';
 /// Contents request parameters
 @JsonSerializable()
 class ContentsRequest {
-  const ContentsRequest({
-    required this.urls,
-    this.ids,
+  ContentsRequest({
+    //required this.urls,
+    required this.ids,
     this.text,
     this.textConfig,
     this.highlights,
@@ -22,8 +22,8 @@ class ContentsRequest {
     this.contextConfig,
   });
 
-  final List<String> urls;
-  final List<String>? ids; // Deprecated but kept for backwards compatibility
+  //List<String>? urls;
+  List<String>? ids; // Deprecated but kept for backwards compatibility
   @JsonKey(includeFromJson: false, includeToJson: false)
   final bool? text;
   final TextConfig? textConfig;
@@ -38,7 +38,8 @@ class ContentsRequest {
   final bool? context;
   final ContextConfig? contextConfig;
 
-  factory ContentsRequest.fromJson(Map<String, dynamic> json) => _$ContentsRequestFromJson(json);
+  factory ContentsRequest.fromJson(Map<String, dynamic> json) =>
+      _$ContentsRequestFromJson(json);
 
   Map<String, dynamic> toJson() {
     final json = _$ContentsRequestToJson(this);
@@ -68,17 +69,14 @@ class ContentsRequest {
 /// Status information for each requested URL
 @JsonSerializable()
 class ContentStatus {
-  const ContentStatus({
-    required this.id,
-    required this.status,
-    this.error,
-  });
+  const ContentStatus({required this.id, required this.status, this.error});
 
   final String id;
   final String status;
   final Map<String, dynamic>? error;
 
-  factory ContentStatus.fromJson(Map<String, dynamic> json) => _$ContentStatusFromJson(json);
+  factory ContentStatus.fromJson(Map<String, dynamic> json) =>
+      _$ContentStatusFromJson(json);
   Map<String, dynamic> toJson() => _$ContentStatusToJson(this);
 }
 
@@ -99,6 +97,7 @@ class ContentsResponse {
   final List<ContentStatus>? statuses;
   final CostDollars? costDollars;
 
-  factory ContentsResponse.fromJson(Map<String, dynamic> json) => _$ContentsResponseFromJson(json);
+  factory ContentsResponse.fromJson(Map<String, dynamic> json) =>
+      _$ContentsResponseFromJson(json);
   Map<String, dynamic> toJson() => _$ContentsResponseToJson(this);
 }

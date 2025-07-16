@@ -147,8 +147,8 @@ class ExaApi {
   ///
   /// Throws [ExaApiException] if the request fails
   Future<ContentsResponse> getContents({
-    required List<String> urls,
-    List<String>? ids, // Deprecated
+    // required List<String> urls,
+    required List<String>? ids, // Deprecated
     bool? text,
     TextConfig? textConfig,
     HighlightsConfig? highlights,
@@ -162,7 +162,6 @@ class ExaApi {
     ContextConfig? contextConfig,
   }) async {
     final request = ContentsRequest(
-      urls: urls,
       ids: ids,
       text: text,
       textConfig: textConfig,
@@ -196,7 +195,7 @@ class ExaApi {
   ///
   /// Returns a [ContentsResponse] containing the page contents
   Future<ContentsResponse> getContentsSimple({
-    required List<String> urls,
+    required List<String> ids,
     bool text = true,
     HighlightsConfig? highlights,
     SummaryConfig? summary,
@@ -213,7 +212,7 @@ class ExaApi {
         : null;
 
     return getContents(
-      urls: urls,
+      ids: ids,
       text: text,
       textConfig: textConfig,
       highlights: highlights,
@@ -243,11 +242,7 @@ class ExaApi {
     bool stream = false,
     bool text = false,
   }) async {
-    final request = AnswerRequest(
-      query: query,
-      stream: stream,
-      text: text,
-    );
+    final request = AnswerRequest(query: query, stream: stream, text: text);
 
     return _performAnswerRequest(request);
   }
@@ -482,11 +477,13 @@ class ExaApi {
     return _performFindSimilar(request);
   }
 
-  Future<FindSimilarResponse> _performFindSimilar(FindSimilarRequest request) async {
+  Future<FindSimilarResponse> _performFindSimilar(
+    FindSimilarRequest request,
+  ) async {
     final client = HttpClient();
 
     try {
-      final uri = Uri.parse('$_host/find-similar');
+      final uri = Uri.parse('$_host/findSimilar');
       final httpRequest = await client.postUrl(uri);
 
       // Set headers
