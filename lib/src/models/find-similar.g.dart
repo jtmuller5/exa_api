@@ -7,38 +7,55 @@ part of 'find-similar.dart';
 // **************************************************************************
 
 FindSimilarRequest _$FindSimilarRequestFromJson(Map<String, dynamic> json) =>
-    FindSimilarRequest(
-      url: json['url'] as String,
-      numResults: (json['numResults'] as num?)?.toInt() ?? 10,
-      includeDomains: (json['includeDomains'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      excludeDomains: (json['excludeDomains'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      startCrawlDate: json['startCrawlDate'] == null
-          ? null
-          : DateTime.parse(json['startCrawlDate'] as String),
-      endCrawlDate: json['endCrawlDate'] == null
-          ? null
-          : DateTime.parse(json['endCrawlDate'] as String),
-      startPublishedDate: json['startPublishedDate'] == null
-          ? null
-          : DateTime.parse(json['startPublishedDate'] as String),
-      endPublishedDate: json['endPublishedDate'] == null
-          ? null
-          : DateTime.parse(json['endPublishedDate'] as String),
-      includeText: (json['includeText'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      excludeText: (json['excludeText'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      context: json['context'] as bool?,
-      contents: json['contents'] == null
-          ? null
-          : ContentsConfig.fromJson(json['contents'] as Map<String, dynamic>),
-    );
+    $checkedCreate('FindSimilarRequest', json, ($checkedConvert) {
+      final val = FindSimilarRequest(
+        url: $checkedConvert('url', (v) => v as String),
+        numResults: $checkedConvert(
+          'numResults',
+          (v) => (v as num?)?.toInt() ?? 10,
+        ),
+        includeDomains: $checkedConvert(
+          'includeDomains',
+          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
+        ),
+        excludeDomains: $checkedConvert(
+          'excludeDomains',
+          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
+        ),
+        startCrawlDate: $checkedConvert(
+          'startCrawlDate',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        endCrawlDate: $checkedConvert(
+          'endCrawlDate',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        startPublishedDate: $checkedConvert(
+          'startPublishedDate',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        endPublishedDate: $checkedConvert(
+          'endPublishedDate',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        includeText: $checkedConvert(
+          'includeText',
+          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
+        ),
+        excludeText: $checkedConvert(
+          'excludeText',
+          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
+        ),
+        context: $checkedConvert('context', (v) => v as bool?),
+        contents: $checkedConvert(
+          'contents',
+          (v) => v == null
+              ? null
+              : ContentsConfig.fromJson(v as Map<String, dynamic>),
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$FindSimilarRequestToJson(
   FindSimilarRequest instance,
@@ -58,5 +75,5 @@ Map<String, dynamic> _$FindSimilarRequestToJson(
   'includeText': instance.includeText,
   'excludeText': instance.excludeText,
   'context': instance.context,
-  'contents': instance.contents,
+  'contents': instance.contents?.toJson(),
 };

@@ -6,10 +6,20 @@ part of 'search.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TextConfig _$TextConfigFromJson(Map<String, dynamic> json) => TextConfig(
-  maxCharacters: (json['maxCharacters'] as num?)?.toInt(),
-  includeHtmlTags: json['includeHtmlTags'] as bool? ?? false,
-);
+TextConfig _$TextConfigFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('TextConfig', json, ($checkedConvert) {
+      final val = TextConfig(
+        maxCharacters: $checkedConvert(
+          'maxCharacters',
+          (v) => (v as num?)?.toInt(),
+        ),
+        includeHtmlTags: $checkedConvert(
+          'includeHtmlTags',
+          (v) => v as bool? ?? false,
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$TextConfigToJson(TextConfig instance) =>
     <String, dynamic>{
@@ -18,11 +28,20 @@ Map<String, dynamic> _$TextConfigToJson(TextConfig instance) =>
     };
 
 HighlightsConfig _$HighlightsConfigFromJson(Map<String, dynamic> json) =>
-    HighlightsConfig(
-      numSentences: (json['numSentences'] as num?)?.toInt() ?? 5,
-      highlightsPerUrl: (json['highlightsPerUrl'] as num?)?.toInt() ?? 1,
-      query: json['query'] as String?,
-    );
+    $checkedCreate('HighlightsConfig', json, ($checkedConvert) {
+      final val = HighlightsConfig(
+        numSentences: $checkedConvert(
+          'numSentences',
+          (v) => (v as num?)?.toInt() ?? 5,
+        ),
+        highlightsPerUrl: $checkedConvert(
+          'highlightsPerUrl',
+          (v) => (v as num?)?.toInt() ?? 1,
+        ),
+        query: $checkedConvert('query', (v) => v as String?),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$HighlightsConfigToJson(HighlightsConfig instance) =>
     <String, dynamic>{
@@ -32,18 +51,28 @@ Map<String, dynamic> _$HighlightsConfigToJson(HighlightsConfig instance) =>
     };
 
 SummaryConfig _$SummaryConfigFromJson(Map<String, dynamic> json) =>
-    SummaryConfig(
-      query: json['query'] as String?,
-      schema: json['schema'] as Map<String, dynamic>?,
-    );
+    $checkedCreate('SummaryConfig', json, ($checkedConvert) {
+      final val = SummaryConfig(
+        query: $checkedConvert('query', (v) => v as String?),
+        schema: $checkedConvert('schema', (v) => v as Map<String, dynamic>?),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$SummaryConfigToJson(SummaryConfig instance) =>
     <String, dynamic>{'query': instance.query, 'schema': instance.schema};
 
-ExtrasConfig _$ExtrasConfigFromJson(Map<String, dynamic> json) => ExtrasConfig(
-  links: (json['links'] as num?)?.toInt() ?? 0,
-  imageLinks: (json['imageLinks'] as num?)?.toInt() ?? 0,
-);
+ExtrasConfig _$ExtrasConfigFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('ExtrasConfig', json, ($checkedConvert) {
+      final val = ExtrasConfig(
+        links: $checkedConvert('links', (v) => (v as num?)?.toInt() ?? 0),
+        imageLinks: $checkedConvert(
+          'imageLinks',
+          (v) => (v as num?)?.toInt() ?? 0,
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$ExtrasConfigToJson(ExtrasConfig instance) =>
     <String, dynamic>{
@@ -52,46 +81,73 @@ Map<String, dynamic> _$ExtrasConfigToJson(ExtrasConfig instance) =>
     };
 
 ContextConfig _$ContextConfigFromJson(Map<String, dynamic> json) =>
-    ContextConfig(maxCharacters: (json['maxCharacters'] as num?)?.toInt());
+    $checkedCreate('ContextConfig', json, ($checkedConvert) {
+      final val = ContextConfig(
+        maxCharacters: $checkedConvert(
+          'maxCharacters',
+          (v) => (v as num?)?.toInt(),
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$ContextConfigToJson(ContextConfig instance) =>
     <String, dynamic>{'maxCharacters': instance.maxCharacters};
 
 ContentsConfig _$ContentsConfigFromJson(
   Map<String, dynamic> json,
-) => ContentsConfig(
-  textConfig: json['textConfig'] == null
-      ? null
-      : TextConfig.fromJson(json['textConfig'] as Map<String, dynamic>),
-  highlights: json['highlights'] == null
-      ? null
-      : HighlightsConfig.fromJson(json['highlights'] as Map<String, dynamic>),
-  summary: json['summary'] == null
-      ? null
-      : SummaryConfig.fromJson(json['summary'] as Map<String, dynamic>),
-  livecrawl: $enumDecodeNullable(_$LivecrawlOptionEnumMap, json['livecrawl']),
-  livecrawlTimeout: (json['livecrawlTimeout'] as num?)?.toInt() ?? 10000,
-  subpages: (json['subpages'] as num?)?.toInt() ?? 0,
-  subpageTarget: json['subpageTarget'],
-  extras: json['extras'] == null
-      ? null
-      : ExtrasConfig.fromJson(json['extras'] as Map<String, dynamic>),
-  contextConfig: json['contextConfig'] == null
-      ? null
-      : ContextConfig.fromJson(json['contextConfig'] as Map<String, dynamic>),
-);
+) => $checkedCreate('ContentsConfig', json, ($checkedConvert) {
+  final val = ContentsConfig(
+    textConfig: $checkedConvert(
+      'textConfig',
+      (v) => v == null ? null : TextConfig.fromJson(v as Map<String, dynamic>),
+    ),
+    highlights: $checkedConvert(
+      'highlights',
+      (v) => v == null
+          ? null
+          : HighlightsConfig.fromJson(v as Map<String, dynamic>),
+    ),
+    summary: $checkedConvert(
+      'summary',
+      (v) =>
+          v == null ? null : SummaryConfig.fromJson(v as Map<String, dynamic>),
+    ),
+    livecrawl: $checkedConvert(
+      'livecrawl',
+      (v) => $enumDecodeNullable(_$LivecrawlOptionEnumMap, v),
+    ),
+    livecrawlTimeout: $checkedConvert(
+      'livecrawlTimeout',
+      (v) => (v as num?)?.toInt() ?? 10000,
+    ),
+    subpages: $checkedConvert('subpages', (v) => (v as num?)?.toInt() ?? 0),
+    subpageTarget: $checkedConvert('subpageTarget', (v) => v),
+    extras: $checkedConvert(
+      'extras',
+      (v) =>
+          v == null ? null : ExtrasConfig.fromJson(v as Map<String, dynamic>),
+    ),
+    contextConfig: $checkedConvert(
+      'contextConfig',
+      (v) =>
+          v == null ? null : ContextConfig.fromJson(v as Map<String, dynamic>),
+    ),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$ContentsConfigToJson(ContentsConfig instance) =>
     <String, dynamic>{
-      'textConfig': instance.textConfig,
-      'highlights': instance.highlights,
-      'summary': instance.summary,
+      'textConfig': instance.textConfig?.toJson(),
+      'highlights': instance.highlights?.toJson(),
+      'summary': instance.summary?.toJson(),
       'livecrawl': _$LivecrawlOptionEnumMap[instance.livecrawl],
       'livecrawlTimeout': instance.livecrawlTimeout,
       'subpages': instance.subpages,
       'subpageTarget': instance.subpageTarget,
-      'extras': instance.extras,
-      'contextConfig': instance.contextConfig,
+      'extras': instance.extras?.toJson(),
+      'contextConfig': instance.contextConfig?.toJson(),
     };
 
 const _$LivecrawlOptionEnumMap = {
@@ -102,42 +158,63 @@ const _$LivecrawlOptionEnumMap = {
 };
 
 SearchRequest _$SearchRequestFromJson(Map<String, dynamic> json) =>
-    SearchRequest(
-      query: json['query'] as String,
-      type:
-          $enumDecodeNullable(_$SearchTypeEnumMap, json['type']) ??
-          SearchType.auto,
-      category: $enumDecodeNullable(_$SearchCategoryEnumMap, json['category']),
-      numResults: (json['numResults'] as num?)?.toInt() ?? 10,
-      includeDomains: (json['includeDomains'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      excludeDomains: (json['excludeDomains'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      startCrawlDate: json['startCrawlDate'] == null
-          ? null
-          : DateTime.parse(json['startCrawlDate'] as String),
-      endCrawlDate: json['endCrawlDate'] == null
-          ? null
-          : DateTime.parse(json['endCrawlDate'] as String),
-      startPublishedDate: json['startPublishedDate'] == null
-          ? null
-          : DateTime.parse(json['startPublishedDate'] as String),
-      endPublishedDate: json['endPublishedDate'] == null
-          ? null
-          : DateTime.parse(json['endPublishedDate'] as String),
-      includeText: (json['includeText'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      excludeText: (json['excludeText'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      context: json['context'] as bool?,
-      contents: json['contents'] == null
-          ? null
-          : ContentsConfig.fromJson(json['contents'] as Map<String, dynamic>),
-    );
+    $checkedCreate('SearchRequest', json, ($checkedConvert) {
+      final val = SearchRequest(
+        query: $checkedConvert('query', (v) => v as String),
+        type: $checkedConvert(
+          'type',
+          (v) => $enumDecodeNullable(_$SearchTypeEnumMap, v) ?? SearchType.auto,
+        ),
+        category: $checkedConvert(
+          'category',
+          (v) => $enumDecodeNullable(_$SearchCategoryEnumMap, v),
+        ),
+        numResults: $checkedConvert(
+          'numResults',
+          (v) => (v as num?)?.toInt() ?? 10,
+        ),
+        includeDomains: $checkedConvert(
+          'includeDomains',
+          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
+        ),
+        excludeDomains: $checkedConvert(
+          'excludeDomains',
+          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
+        ),
+        startCrawlDate: $checkedConvert(
+          'startCrawlDate',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        endCrawlDate: $checkedConvert(
+          'endCrawlDate',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        startPublishedDate: $checkedConvert(
+          'startPublishedDate',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        endPublishedDate: $checkedConvert(
+          'endPublishedDate',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        includeText: $checkedConvert(
+          'includeText',
+          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
+        ),
+        excludeText: $checkedConvert(
+          'excludeText',
+          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
+        ),
+        context: $checkedConvert('context', (v) => v as bool?),
+        contents: $checkedConvert(
+          'contents',
+          (v) => v == null
+              ? null
+              : ContentsConfig.fromJson(v as Map<String, dynamic>),
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$SearchRequestToJson(
   SearchRequest instance,
@@ -157,7 +234,7 @@ Map<String, dynamic> _$SearchRequestToJson(
   'includeText': instance.includeText,
   'excludeText': instance.excludeText,
   'context': instance.context,
-  'contents': instance.contents,
+  'contents': instance.contents?.toJson(),
 };
 
 const _$SearchTypeEnumMap = {
@@ -179,13 +256,19 @@ const _$SearchCategoryEnumMap = {
 };
 
 CostBreakdown _$CostBreakdownFromJson(Map<String, dynamic> json) =>
-    CostBreakdown(
-      search: (json['search'] as num).toDouble(),
-      contents: (json['contents'] as num).toDouble(),
-      breakdown: (json['breakdown'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, (e as num).toDouble()),
-      ),
-    );
+    $checkedCreate('CostBreakdown', json, ($checkedConvert) {
+      final val = CostBreakdown(
+        search: $checkedConvert('search', (v) => (v as num).toDouble()),
+        contents: $checkedConvert('contents', (v) => (v as num).toDouble()),
+        breakdown: $checkedConvert(
+          'breakdown',
+          (v) => (v as Map<String, dynamic>).map(
+            (k, e) => MapEntry(k, (e as num).toDouble()),
+          ),
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$CostBreakdownToJson(CostBreakdown instance) =>
     <String, dynamic>{
@@ -194,51 +277,75 @@ Map<String, dynamic> _$CostBreakdownToJson(CostBreakdown instance) =>
       'breakdown': instance.breakdown,
     };
 
-CostDollars _$CostDollarsFromJson(Map<String, dynamic> json) => CostDollars(
-  total: (json['total'] as num).toDouble(),
-  breakDown: (json['breakDown'] as List<dynamic>)
-      .map((e) => CostBreakdown.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  perRequestPrices: (json['perRequestPrices'] as Map<String, dynamic>).map(
-    (k, e) => MapEntry(k, (e as num).toDouble()),
-  ),
-  perPagePrices: (json['perPagePrices'] as Map<String, dynamic>).map(
-    (k, e) => MapEntry(k, (e as num).toDouble()),
-  ),
-);
+CostDollars _$CostDollarsFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('CostDollars', json, ($checkedConvert) {
+      final val = CostDollars(
+        total: $checkedConvert('total', (v) => (v as num).toDouble()),
+        breakDown: $checkedConvert(
+          'breakDown',
+          (v) => (v as List<dynamic>)
+              .map((e) => CostBreakdown.fromJson(e as Map<String, dynamic>))
+              .toList(),
+        ),
+        perRequestPrices: $checkedConvert(
+          'perRequestPrices',
+          (v) => (v as Map<String, dynamic>).map(
+            (k, e) => MapEntry(k, (e as num).toDouble()),
+          ),
+        ),
+        perPagePrices: $checkedConvert(
+          'perPagePrices',
+          (v) => (v as Map<String, dynamic>).map(
+            (k, e) => MapEntry(k, (e as num).toDouble()),
+          ),
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$CostDollarsToJson(CostDollars instance) =>
     <String, dynamic>{
       'total': instance.total,
-      'breakDown': instance.breakDown,
+      'breakDown': instance.breakDown.map((e) => e.toJson()).toList(),
       'perRequestPrices': instance.perRequestPrices,
       'perPagePrices': instance.perPagePrices,
     };
 
-SearchResult _$SearchResultFromJson(Map<String, dynamic> json) => SearchResult(
-  title: json['title'] as String,
-  url: json['url'] as String,
-  publishedDate: json['publishedDate'] == null
-      ? null
-      : DateTime.parse(json['publishedDate'] as String),
-  author: json['author'] as String?,
-  score: (json['score'] as num?)?.toDouble(),
-  id: json['id'] as String,
-  image: json['image'] as String?,
-  favicon: json['favicon'] as String?,
-  text: json['text'] as String?,
-  highlights: (json['highlights'] as List<dynamic>?)
-      ?.map((e) => e as String)
-      .toList(),
-  highlightScores: (json['highlightScores'] as List<dynamic>?)
-      ?.map((e) => (e as num).toDouble())
-      .toList(),
-  summary: json['summary'] as String?,
-  subpages: (json['subpages'] as List<dynamic>?)
-      ?.map((e) => SearchResult.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  extras: json['extras'] as Map<String, dynamic>?,
-);
+SearchResult _$SearchResultFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('SearchResult', json, ($checkedConvert) {
+      final val = SearchResult(
+        title: $checkedConvert('title', (v) => v as String),
+        url: $checkedConvert('url', (v) => v as String),
+        publishedDate: $checkedConvert(
+          'publishedDate',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        author: $checkedConvert('author', (v) => v as String?),
+        score: $checkedConvert('score', (v) => (v as num?)?.toDouble()),
+        id: $checkedConvert('id', (v) => v as String),
+        image: $checkedConvert('image', (v) => v as String?),
+        favicon: $checkedConvert('favicon', (v) => v as String?),
+        text: $checkedConvert('text', (v) => v as String?),
+        highlights: $checkedConvert(
+          'highlights',
+          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
+        ),
+        highlightScores: $checkedConvert(
+          'highlightScores',
+          (v) =>
+              (v as List<dynamic>?)?.map((e) => (e as num).toDouble()).toList(),
+        ),
+        summary: $checkedConvert('summary', (v) => v as String?),
+        subpages: $checkedConvert(
+          'subpages',
+          (v) => (v as List<dynamic>?)
+              ?.map((e) => SearchResult.fromJson(e as Map<String, dynamic>))
+              .toList(),
+        ),
+        extras: $checkedConvert('extras', (v) => v as Map<String, dynamic>?),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
     <String, dynamic>{
@@ -254,33 +361,45 @@ Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
       'highlights': instance.highlights,
       'highlightScores': instance.highlightScores,
       'summary': instance.summary,
-      'subpages': instance.subpages,
+      'subpages': instance.subpages?.map((e) => e.toJson()).toList(),
       'extras': instance.extras,
     };
 
 SearchResponse _$SearchResponseFromJson(Map<String, dynamic> json) =>
-    SearchResponse(
-      requestId: json['requestId'] as String,
-      resolvedSearchType: $enumDecode(
-        _$SearchTypeEnumMap,
-        json['resolvedSearchType'],
-      ),
-      results: (json['results'] as List<dynamic>)
-          .map((e) => SearchResult.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      searchType: $enumDecodeNullable(_$SearchTypeEnumMap, json['searchType']),
-      context: json['context'] as String?,
-      costDollars: json['costDollars'] == null
-          ? null
-          : CostDollars.fromJson(json['costDollars'] as Map<String, dynamic>),
-    );
+    $checkedCreate('SearchResponse', json, ($checkedConvert) {
+      final val = SearchResponse(
+        requestId: $checkedConvert('requestId', (v) => v as String),
+        resolvedSearchType: $checkedConvert(
+          'resolvedSearchType',
+          (v) => $enumDecode(_$SearchTypeEnumMap, v),
+        ),
+        results: $checkedConvert(
+          'results',
+          (v) => (v as List<dynamic>)
+              .map((e) => SearchResult.fromJson(e as Map<String, dynamic>))
+              .toList(),
+        ),
+        searchType: $checkedConvert(
+          'searchType',
+          (v) => $enumDecodeNullable(_$SearchTypeEnumMap, v),
+        ),
+        context: $checkedConvert('context', (v) => v as String?),
+        costDollars: $checkedConvert(
+          'costDollars',
+          (v) => v == null
+              ? null
+              : CostDollars.fromJson(v as Map<String, dynamic>),
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$SearchResponseToJson(SearchResponse instance) =>
     <String, dynamic>{
       'requestId': instance.requestId,
       'resolvedSearchType': _$SearchTypeEnumMap[instance.resolvedSearchType]!,
-      'results': instance.results,
+      'results': instance.results.map((e) => e.toJson()).toList(),
       'searchType': _$SearchTypeEnumMap[instance.searchType],
       'context': instance.context,
-      'costDollars': instance.costDollars,
+      'costDollars': instance.costDollars?.toJson(),
     };

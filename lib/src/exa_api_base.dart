@@ -1,6 +1,7 @@
 library exa_api;
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:exa_api/src/models/answer.dart';
@@ -343,6 +344,7 @@ class ExaApi {
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(responseBody) as Map<String, dynamic>;
+        log("Search response: $jsonResponse");
         return SearchResponse.fromJson(jsonResponse);
       } else {
         String errorMessage =
@@ -359,6 +361,7 @@ class ExaApi {
       }
     } catch (e) {
       if (e is ExaApiException) {
+        print('Exa API Error: ${e.message}');
         rethrow;
       }
       throw ExaApiException('Network error: $e');
