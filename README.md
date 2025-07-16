@@ -2,9 +2,9 @@
 
 <p align="center">                    
 <a href="https://img.shields.io/badge/License-MIT-green"><img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License"></a>
-<a href="https://pub.dev/packages/code_on_the_rocks"><img src="https://img.shields.io/pub/v/file_tree?label=pub&color=orange" alt="pub version"></a>      
+<a href="https://pub.dev/publishers/joemuller.com/packages"><img src="https://img.shields.io/pub/v/exa_api?label=pub&color=blue" alt="pub version"></a>      
 <a href="https://twitter.com/BosonJoe">
-    <img src="https://img.shields.io/twitter/follow/code_ontherocks?style=social">
+    <img src="https://img.shields.io/twitter/follow/BosonJoe?style=social">
   </a>
 </p>
 
