@@ -1,4 +1,4 @@
-![Exa AI](https://github.com/CodeOTR/file_tree/raw/main/assets/exa.jpeg)
+![Exa AI](https://github.com/jtmuller5/exa_api/raw/main/assets/exa.jpeg)
 
 <p align="center">                    
 <a href="https://img.shields.io/badge/License-MIT-green"><img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License"></a>
@@ -33,7 +33,7 @@ dependencies:
 
 ## Setup
 
-1. Get your API key from [Exa Dashboard](https://dashboard.exa.ai/)
+1. Get your API key from [Exa Dashboard](https://dashboard.exa.ai/api-keys)
 2. Initialize the client:
 
 ```dart
