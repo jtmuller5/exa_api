@@ -31,9 +31,9 @@ class AnswerRequest {
 @JsonSerializable()
 class AnswerCitation {
   const AnswerCitation({
-    required this.id,
-    required this.url,
-    required this.title,
+    this.id,
+    this.url,
+    this.title,
     this.author,
     this.publishedDate,
     this.text,
@@ -42,13 +42,13 @@ class AnswerCitation {
   });
 
   /// The temporary ID for the document
-  final String id;
+  final String? id;
 
   /// The URL of the search result
-  final String url;
+  final String? url;
 
   /// The title of the search result
-  final String title;
+  final String? title;
 
   /// If available, the author of the content
   final String? author;
@@ -75,16 +75,16 @@ class AnswerCitation {
 @JsonSerializable()
 class AnswerResponse {
   const AnswerResponse({
-    required this.answer,
-    required this.citations,
+    this.answer,
+    this.citations,
     this.costDollars,
   });
 
   /// The generated answer based on search results
-  final String answer;
+  final String? answer;
 
   /// Search results used to generate the answer
-  final List<AnswerCitation> citations;
+  final List<AnswerCitation>? citations;
 
   /// Cost information for the request
   final CostDollars? costDollars;

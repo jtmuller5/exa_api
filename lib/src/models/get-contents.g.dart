@@ -77,8 +77,8 @@ const _$LivecrawlOptionEnumMap = {
 ContentStatus _$ContentStatusFromJson(Map<String, dynamic> json) =>
     $checkedCreate('ContentStatus', json, ($checkedConvert) {
       final val = ContentStatus(
-        id: $checkedConvert('id', (v) => v as String),
-        status: $checkedConvert('status', (v) => v as String),
+        id: $checkedConvert('id', (v) => v as String?),
+        status: $checkedConvert('status', (v) => v as String?),
         error: $checkedConvert('error', (v) => v as Map<String, dynamic>?),
       );
       return val;
@@ -94,11 +94,11 @@ Map<String, dynamic> _$ContentStatusToJson(ContentStatus instance) =>
 ContentsResponse _$ContentsResponseFromJson(Map<String, dynamic> json) =>
     $checkedCreate('ContentsResponse', json, ($checkedConvert) {
       final val = ContentsResponse(
-        requestId: $checkedConvert('requestId', (v) => v as String),
+        requestId: $checkedConvert('requestId', (v) => v as String?),
         results: $checkedConvert(
           'results',
-          (v) => (v as List<dynamic>)
-              .map((e) => SearchResult.fromJson(e as Map<String, dynamic>))
+          (v) => (v as List<dynamic>?)
+              ?.map((e) => SearchResult.fromJson(e as Map<String, dynamic>))
               .toList(),
         ),
         context: $checkedConvert('context', (v) => v as String?),
@@ -121,7 +121,7 @@ ContentsResponse _$ContentsResponseFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ContentsResponseToJson(ContentsResponse instance) =>
     <String, dynamic>{
       'requestId': instance.requestId,
-      'results': instance.results.map((e) => e.toJson()).toList(),
+      'results': instance.results?.map((e) => e.toJson()).toList(),
       'context': instance.context,
       'statuses': instance.statuses?.map((e) => e.toJson()).toList(),
       'costDollars': instance.costDollars?.toJson(),

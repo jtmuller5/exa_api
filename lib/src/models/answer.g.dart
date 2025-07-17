@@ -26,9 +26,9 @@ Map<String, dynamic> _$AnswerRequestToJson(AnswerRequest instance) =>
 AnswerCitation _$AnswerCitationFromJson(Map<String, dynamic> json) =>
     $checkedCreate('AnswerCitation', json, ($checkedConvert) {
       final val = AnswerCitation(
-        id: $checkedConvert('id', (v) => v as String),
-        url: $checkedConvert('url', (v) => v as String),
-        title: $checkedConvert('title', (v) => v as String),
+        id: $checkedConvert('id', (v) => v as String?),
+        url: $checkedConvert('url', (v) => v as String?),
+        title: $checkedConvert('title', (v) => v as String?),
         author: $checkedConvert('author', (v) => v as String?),
         publishedDate: $checkedConvert('publishedDate', (v) => v as String?),
         text: $checkedConvert('text', (v) => v as String?),
@@ -53,11 +53,11 @@ Map<String, dynamic> _$AnswerCitationToJson(AnswerCitation instance) =>
 AnswerResponse _$AnswerResponseFromJson(Map<String, dynamic> json) =>
     $checkedCreate('AnswerResponse', json, ($checkedConvert) {
       final val = AnswerResponse(
-        answer: $checkedConvert('answer', (v) => v as String),
+        answer: $checkedConvert('answer', (v) => v as String?),
         citations: $checkedConvert(
           'citations',
-          (v) => (v as List<dynamic>)
-              .map((e) => AnswerCitation.fromJson(e as Map<String, dynamic>))
+          (v) => (v as List<dynamic>?)
+              ?.map((e) => AnswerCitation.fromJson(e as Map<String, dynamic>))
               .toList(),
         ),
         costDollars: $checkedConvert(
@@ -73,6 +73,6 @@ AnswerResponse _$AnswerResponseFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$AnswerResponseToJson(AnswerResponse instance) =>
     <String, dynamic>{
       'answer': instance.answer,
-      'citations': instance.citations.map((e) => e.toJson()).toList(),
+      'citations': instance.citations?.map((e) => e.toJson()).toList(),
       'costDollars': instance.costDollars?.toJson(),
     };

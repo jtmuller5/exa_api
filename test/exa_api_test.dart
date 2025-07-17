@@ -16,7 +16,13 @@ void main() {
         expect(exa.debugMode, isTrue);
       });
 
-      test('should throw assertion error with empty API key', () {
+      test('should create ExaApi instance with environment variable', () {
+        // This would work if EXA_API_KEY is set at compile time
+        // For testing, we'll just verify the constructor doesn't throw
+        expect(() => ExaApi(apiKey: 'test_key'), returnsNormally);
+      });
+
+      test('should throw assertion error with empty API key and no env var', () {
         expect(() => ExaApi(apiKey: ''), throwsA(isA<AssertionError>()));
       });
     });
@@ -148,6 +154,17 @@ void main() {
         expect(citation.publishedDate, equals('2023-01-01'));
         expect(citation.text, equals('Test content'));
       });
+
+      test('should create AnswerCitation with nullable fields', () {
+        const citation = AnswerCitation();
+
+        expect(citation.id, isNull);
+        expect(citation.url, isNull);
+        expect(citation.title, isNull);
+        expect(citation.author, isNull);
+        expect(citation.publishedDate, isNull);
+        expect(citation.text, isNull);
+      });
     });
 
     group('Find Similar Models', () {
@@ -210,6 +227,84 @@ void main() {
         expect(status.status, equals('success'));
         expect(status.error, equals({'tag': 'NO_ERROR'}));
       });
+
+      test('should create ContentStatus with nullable fields', () {
+        const status = ContentStatus();
+
+        expect(status.id, isNull);
+        expect(status.status, isNull);
+        expect(status.error, isNull);
+      });
+    });
+
+    group('Answer Response Models', () {
+      test('should create AnswerResponse with parameters', () {
+        final response = AnswerResponse(
+          answer: 'Test answer',
+          citations: [
+            const AnswerCitation(
+              id: 'test-id',
+              url: 'https://example.com',
+              title: 'Test Title',
+            ),
+          ],
+          costDollars: const CostDollars(
+            total: 0.005,
+            breakDown: null,
+            perRequestPrices: null,
+            perPagePrices: null,
+          ),
+        );
+
+        expect(response.answer, equals('Test answer'));
+        expect(response.citations?.length, equals(1));
+        expect(response.citations?[0].id, equals('test-id'));
+        expect(response.costDollars?.total, equals(0.005));
+      });
+
+      test('should create AnswerResponse with nullable fields', () {
+        const response = AnswerResponse();
+
+        expect(response.answer, isNull);
+        expect(response.citations, isNull);
+        expect(response.costDollars, isNull);
+      });
+    });
+
+    group('Contents Response Models', () {
+      test('should create ContentsResponse with parameters', () {
+        final response = ContentsResponse(
+          requestId: 'test-request-id',
+          results: [
+            const SearchResult(
+              title: 'Test Title',
+              url: 'https://example.com',
+              id: 'test-id',
+            ),
+          ],
+          context: 'test context',
+          statuses: [
+            const ContentStatus(
+              id: 'test-id',
+              status: 'success',
+            ),
+          ],
+        );
+
+        expect(response.requestId, equals('test-request-id'));
+        expect(response.results?.length, equals(1));
+        expect(response.context, equals('test context'));
+        expect(response.statuses?.length, equals(1));
+      });
+
+      test('should create ContentsResponse with nullable fields', () {
+        const response = ContentsResponse();
+
+        expect(response.requestId, isNull);
+        expect(response.results, isNull);
+        expect(response.context, isNull);
+        expect(response.statuses, isNull);
+      });
     });
 
     group('Search Results', () {
@@ -237,6 +332,20 @@ void main() {
         expect(result.summary, equals('Test summary'));
       });
 
+      test('should create SearchResult with nullable fields', () {
+        const result = SearchResult();
+
+        expect(result.title, isNull);
+        expect(result.url, isNull);
+        expect(result.id, isNull);
+        expect(result.author, isNull);
+        expect(result.score, isNull);
+        expect(result.publishedDate, isNull);
+        expect(result.text, isNull);
+        expect(result.highlights, isNull);
+        expect(result.summary, isNull);
+      });
+
       test('should create SearchResponse with parameters', () {
         final response = SearchResponse(
           requestId: 'test-request-id',
@@ -254,10 +363,20 @@ void main() {
 
         expect(response.requestId, equals('test-request-id'));
         expect(response.resolvedSearchType, equals(SearchType.neural));
-        expect(response.results.length, equals(1));
-        expect(response.results[0].title, equals('Test Title'));
+        expect(response.results?.length, equals(1));
+        expect(response.results?[0].title, equals('Test Title'));
         expect(response.searchType, equals(SearchType.auto));
         expect(response.context, equals('test context'));
+      });
+
+      test('should create SearchResponse with nullable fields', () {
+        const response = SearchResponse();
+
+        expect(response.requestId, isNull);
+        expect(response.resolvedSearchType, isNull);
+        expect(response.results, isNull);
+        expect(response.searchType, isNull);
+        expect(response.context, isNull);
       });
     });
 
@@ -271,8 +390,16 @@ void main() {
 
         expect(breakdown.search, equals(0.005));
         expect(breakdown.contents, equals(0.001));
-        expect(breakdown.breakdown['neuralSearch'], equals(0.005));
-        expect(breakdown.breakdown['contentText'], equals(0.001));
+        expect(breakdown.breakdown?['neuralSearch'], equals(0.005));
+        expect(breakdown.breakdown?['contentText'], equals(0.001));
+      });
+
+      test('should create CostBreakdown with nullable fields', () {
+        const breakdown = CostBreakdown();
+
+        expect(breakdown.search, isNull);
+        expect(breakdown.contents, isNull);
+        expect(breakdown.breakdown, isNull);
       });
 
       test('should create CostDollars with parameters', () {

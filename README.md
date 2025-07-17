@@ -34,7 +34,35 @@ dependencies:
 ## Setup
 
 1. Get your API key from [Exa Dashboard](https://dashboard.exa.ai/api-keys)
-2. Initialize the client:
+2. Set up authentication (choose one method):
+
+### Option 1: Environment Variable (Recommended)
+Set the `EXA_API_KEY` environment variable at compile time:
+
+```bash
+# For dart run
+dart run --define=EXA_API_KEY=your_api_key_here your_app.dart
+
+# For flutter run
+flutter run --dart-define=EXA_API_KEY=your_api_key_here
+
+# Or set as system environment variable
+export EXA_API_KEY="your_api_key_here"
+dart run your_app.dart
+```
+
+Then initialize the client:
+
+```dart
+import 'package:exa_api/exa_api.dart';
+
+final exa = ExaApi(
+  debugMode: true, // Optional: enable debug logging
+);
+```
+
+### Option 2: Direct API Key
+Initialize the client with an explicit API key:
 
 ```dart
 import 'package:exa_api/exa_api.dart';

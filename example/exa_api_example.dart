@@ -8,20 +8,28 @@ import 'package:exa_api/exa_api.dart';
 /// - Extract content from URLs
 /// - Find similar pages
 /// - Handle errors and costs
+///
+/// ## API Key Setup
+///
+/// Set your API key as an environment variable at compile time:
+/// ```bash
+/// # Option 1: Using dart run with --define
+/// dart run --define=EXA_API_KEY=your_api_key_here exa_api_example.dart
+///
+/// # Option 2: Using system environment variable
+/// export EXA_API_KEY="your_api_key_here"
+/// dart run exa_api_example.dart
+/// ```
+///
+/// Or pass it explicitly to the constructor (not recommended for production)
 Future<void> main() async {
   // Initialize the Exa API client
-  // Note: Replace with your actual API key from https://dashboard.exa.ai/
-  const apiKey = 'YOUR_EXA_API_KEY_HERE';
-
-  if (apiKey == 'YOUR_EXA_API_KEY_HERE') {
-    print('Please set your Exa API key in the main() function');
-    return;
-  }
-
-  final exa = ExaApi(
-    apiKey: apiKey,
-    debugMode: true, // Enable debug logging
-  );
+  // Option 1: Use environment variable (recommended)
+  // Set EXA_API_KEY environment variable before running
+  final exa = ExaApi(debugMode: true);
+  
+  // Option 2: Explicit API key (not recommended for production)
+  // final exa = ExaApi(apiKey: 'your_api_key_here', debugMode: true);
 
   print('🚀 Exa API Dart SDK Example');
   print('=' * 50);
@@ -44,6 +52,12 @@ Future<void> main() async {
   // Example 6: Error Handling
   await _demonstrateErrorHandling(exa);
 
+  // Example 7: Advanced Configurations
+  await _demonstrateAdvancedConfigurations(exa);
+
+  // Example 8: Cost Monitoring
+  await _demonstrateCostMonitoring(exa);
+
   print('✅ All examples completed!');
 }
 
@@ -60,17 +74,18 @@ Future<void> _demonstrateSearch(ExaApi exa) async {
       category: SearchCategory.researchPaper,
     );
 
-    print('Search type used: ${results.resolvedSearchType?.name}');
-    print('Found ${results.results.length} results');
+    print('Search type used: ${results.resolvedSearchType?.name ?? 'Unknown'}');
+    print('Found ${results.results?.length ?? 0} results');
 
     if (results.costDollars != null) {
-      print('Cost: \$${results.costDollars!.total?.toStringAsFixed(4)}');
+      print('Cost: \$${(results.costDollars!.total ?? 0).toStringAsFixed(4)}');
     }
 
-    for (int i = 0; i < results.results.length; i++) {
-      final result = results.results[i];
-      print('${i + 1}. ${result.title}');
-      print('   URL: ${result.url}');
+    final resultsList = results.results ?? [];
+    for (int i = 0; i < resultsList.length; i++) {
+      final result = resultsList[i];
+      print('${i + 1}. ${result.title ?? 'No title'}');
+      print('   URL: ${result.url ?? 'No URL'}');
       print('   Score: ${result.score?.toStringAsFixed(3) ?? 'N/A'}');
       print('   Author: ${result.author ?? 'Unknown'}');
     }
@@ -101,12 +116,13 @@ Future<void> _demonstrateAdvancedSearch(ExaApi exa) async {
 
     print('Search Results with Content:');
 
-    for (int i = 0; i < results.results.length; i++) {
-      final result = results.results[i];
-      print('\n${i + 1}. ${result.title}');
-      print('   URL: ${result.url}');
+    final resultsList = results.results ?? [];
+    for (int i = 0; i < resultsList.length; i++) {
+      final result = resultsList[i];
+      print('\n${i + 1}. ${result.title ?? 'No title'}');
+      print('   URL: ${result.url ?? 'No URL'}');
 
-      if (result.summary != null) {
+      if (result.summary != null && result.summary!.isNotEmpty) {
         print('   Summary: ${result.summary}');
       }
 
@@ -114,7 +130,7 @@ Future<void> _demonstrateAdvancedSearch(ExaApi exa) async {
         print('   Highlights: ${result.highlights!.join(' | ')}');
       }
 
-      if (result.text != null) {
+      if (result.text != null && result.text!.isNotEmpty) {
         final text = result.text!.length > 200
             ? '${result.text!.substring(0, 200)}...'
             : result.text!;
@@ -140,16 +156,18 @@ Future<void> _demonstrateAnswer(ExaApi exa) async {
     print(
       'Question: What are the latest developments in large language models?',
     );
-    print('Answer: ${answer.answer}');
-    print('\nSources used (${answer.citations.length}):');
+    print('Answer: ${answer.answer ?? 'No answer provided'}');
+    
+    final citationsList = answer.citations ?? [];
+    print('\nSources used (${citationsList.length}):');
 
-    for (int i = 0; i < answer.citations.length; i++) {
-      final citation = answer.citations[i];
-      print('${i + 1}. ${citation.title}');
-      print('   URL: ${citation.url}');
+    for (int i = 0; i < citationsList.length; i++) {
+      final citation = citationsList[i];
+      print('${i + 1}. ${citation.title ?? 'No title'}');
+      print('   URL: ${citation.url ?? 'No URL'}');
       print('   Author: ${citation.author ?? 'Unknown'}');
 
-      if (citation.text != null) {
+      if (citation.text != null && citation.text!.isNotEmpty) {
         final text = citation.text!.length > 150
             ? '${citation.text!.substring(0, 150)}...'
             : citation.text!;
@@ -182,16 +200,17 @@ Future<void> _demonstrateGetContents(ExaApi exa) async {
       maxCharacters: 1500,
     );
 
-    print('Extracted content from ${contents.results.length} URLs:');
+    print('Extracted content from ${contents.results?.length ?? 0} URLs:');
 
-    for (int i = 0; i < contents.results.length; i++) {
-      final result = contents.results[i];
-      print('\n${i + 1}. ${result.title}');
-      print('   URL: ${result.url}');
+    final resultsList = contents.results ?? [];
+    for (int i = 0; i < resultsList.length; i++) {
+      final result = resultsList[i];
+      print('\n${i + 1}. ${result.title ?? 'No title'}');
+      print('   URL: ${result.url ?? 'No URL'}');
       print('   Author: ${result.author ?? 'Unknown'}');
       print('   Published: ${result.publishedDate?.toString() ?? 'Unknown'}');
 
-      if (result.summary != null) {
+      if (result.summary != null && result.summary!.isNotEmpty) {
         print('   Summary: ${result.summary}');
       }
 
@@ -202,7 +221,7 @@ Future<void> _demonstrateGetContents(ExaApi exa) async {
         }
       }
 
-      if (result.text != null) {
+      if (result.text != null && result.text!.isNotEmpty) {
         final text = result.text!.length > 300
             ? '${result.text!.substring(0, 300)}...'
             : result.text!;
@@ -232,18 +251,19 @@ Future<void> _demonstrateFindSimilar(ExaApi exa) async {
     );
 
     print('Similar pages to: https://arxiv.org/abs/2307.06435');
-    print('Found ${similar.results.length} similar pages:');
+    print('Found ${similar.results?.length ?? 0} similar pages:');
 
-    for (int i = 0; i < similar.results.length; i++) {
-      final result = similar.results[i];
-      print('\n${i + 1}. ${result.title}');
-      print('   URL: ${result.url}');
+    final resultsList = similar.results ?? [];
+    for (int i = 0; i < resultsList.length; i++) {
+      final result = resultsList[i];
+      print('\n${i + 1}. ${result.title ?? 'No title'}');
+      print('   URL: ${result.url ?? 'No URL'}');
       print(
         '   Similarity Score: ${result.score?.toStringAsFixed(3) ?? 'N/A'}',
       );
       print('   Author: ${result.author ?? 'Unknown'}');
 
-      if (result.summary != null) {
+      if (result.summary != null && result.summary!.isNotEmpty) {
         print('   Summary: ${result.summary}');
       }
 
@@ -251,7 +271,7 @@ Future<void> _demonstrateFindSimilar(ExaApi exa) async {
         print('   Highlights: ${result.highlights!.join(' | ')}');
       }
 
-      if (result.text != null) {
+      if (result.text != null && result.text!.isNotEmpty) {
         final text = result.text!.length > 200
             ? '${result.text!.substring(0, 200)}...'
             : result.text!;
@@ -281,7 +301,17 @@ Future<void> _demonstrateErrorHandling(ExaApi exa) async {
     print('Caught general exception: $e');
   }
 
-  // Example 2: Empty query
+  // Example 2: Missing API key (both parameter and environment variable)
+  try {
+    // This would throw an assertion error if EXA_API_KEY env var is not set
+    // and no apiKey parameter is provided
+    print('Note: If EXA_API_KEY environment variable is not set, creating');
+    print('ExaApi() without an apiKey parameter would throw an assertion error.');
+  } catch (e) {
+    print('Missing API key error: $e');
+  }
+
+  // Example 3: Empty query
   try {
     await exa.search(query: '');
   } on ExaApiException catch (e) {
@@ -290,7 +320,7 @@ Future<void> _demonstrateErrorHandling(ExaApi exa) async {
     print('Unexpected error: $e');
   }
 
-  // Example 3: Network error simulation
+  // Example 4: Network error simulation
   print(
     'Network and API errors are handled gracefully with detailed messages.',
   );
@@ -316,9 +346,10 @@ Future<void> _demonstrateAdvancedConfigurations(ExaApi exa) async {
     );
 
     print('Date-filtered search results:');
-    for (final result in results.results) {
+    final resultsList = results.results ?? [];
+    for (final result in resultsList) {
       print(
-        '- ${result.title} (${result.publishedDate?.toString() ?? 'Unknown date'})',
+        '- ${result.title ?? 'No title'} (${result.publishedDate?.toString() ?? 'Unknown date'})',
       );
     }
   } catch (e) {
@@ -345,8 +376,9 @@ Future<void> _demonstrateAdvancedConfigurations(ExaApi exa) async {
     );
 
     print('\nAdvanced content extraction:');
-    for (final result in contents.results) {
-      print('Title: ${result.title}');
+    final resultsList = contents.results ?? [];
+    for (final result in resultsList) {
+      print('Title: ${result.title ?? 'No title'}');
       if (result.extras != null) {
         print('Extra links found: ${result.extras!['links']?.length ?? 0}');
       }
@@ -377,11 +409,11 @@ Future<void> _demonstrateCostMonitoring(ExaApi exa) async {
 
       if (cost.breakDown != null) {
         for (final breakdown in cost.breakDown!) {
-          print('Search Cost: \$${breakdown.search.toStringAsFixed(6)}');
-          print('Content Cost: \$${breakdown.contents.toStringAsFixed(6)}');
+          print('Search Cost: \$${(breakdown.search ?? 0).toStringAsFixed(6)}');
+          print('Content Cost: \$${(breakdown.contents ?? 0).toStringAsFixed(6)}');
 
           print('Detailed Breakdown:');
-          breakdown.breakdown.forEach((key, value) {
+          breakdown.breakdown?.forEach((key, value) {
             print('  $key: \$${value.toStringAsFixed(6)}');
           });
         }

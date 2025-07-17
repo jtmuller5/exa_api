@@ -243,14 +243,14 @@ class SearchRequest {
 @JsonSerializable()
 class CostBreakdown {
   const CostBreakdown({
-    required this.search,
-    required this.contents,
-    required this.breakdown,
+    this.search,
+    this.contents,
+    this.breakdown,
   });
 
-  final double search;
-  final double contents;
-  final Map<String, double> breakdown;
+  final double? search;
+  final double? contents;
+  final Map<String, double>? breakdown;
 
   factory CostBreakdown.fromJson(Map<String, dynamic> json) =>
       _$CostBreakdownFromJson(json);
@@ -281,12 +281,12 @@ class CostDollars {
 @JsonSerializable()
 class SearchResult {
   const SearchResult({
-    required this.title,
-    required this.url,
+    this.title,
+    this.url,
     this.publishedDate,
     this.author,
     this.score,
-    required this.id,
+    this.id,
     this.image,
     this.favicon,
     this.text,
@@ -297,12 +297,12 @@ class SearchResult {
     this.extras,
   });
 
-  final String title;
-  final String url;
+  final String? title;
+  final String? url;
   final DateTime? publishedDate;
   final String? author;
   final double? score;
-  final String id;
+  final String? id;
   final String? image;
   final String? favicon;
   final String? text;
@@ -321,17 +321,17 @@ class SearchResult {
 @JsonSerializable()
 class SearchResponse {
   const SearchResponse({
-    required this.requestId,
-    required this.resolvedSearchType,
-    required this.results,
+    this.requestId,
+    this.resolvedSearchType,
+    this.results,
     this.searchType,
     this.context,
     this.costDollars,
   });
 
-  final String requestId;
+  final String? requestId;
   final SearchType? resolvedSearchType;
-  final List<SearchResult> results;
+  final List<SearchResult>? results;
   final SearchType? searchType;
   final String? context;
   final CostDollars? costDollars;

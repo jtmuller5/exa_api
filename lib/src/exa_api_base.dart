@@ -9,9 +9,55 @@ import 'package:exa_api/src/models/find-similar.dart';
 import 'package:exa_api/src/models/get-contents.dart';
 import 'package:exa_api/src/models/search.dart';
 
-class ExaApi {
-  ExaApi({required this.apiKey, this.debugMode = false})
-    : assert(apiKey.isNotEmpty, 'API key must not be empty.');
+/// Exa API client for Dart and Flutter applications
+///
+/// The ExaApi class provides access to all Exa API endpoints including:
+/// - Web search with neural and keyword modes
+/// - AI-powered answers with citations
+/// - Content extraction from URLs
+/// - Finding similar pages
+///
+/// ## Authentication
+///
+/// The API key can be provided in two ways:
+/// 1. Explicitly as a constructor parameter: `ExaApi(apiKey: 'your_key_here')`
+/// 2. Via the `EXA_API_KEY` compile-time environment variable: `ExaApi()` 
+///    (set with `--define=EXA_API_KEY=your_key` or system environment variable)
+///
+/// ## Example Usage
+///
+/// ```dart
+/// // Using compile-time environment variable (recommended)
+/// // Run with: dart run --define=EXA_API_KEY=your_key your_app.dart
+/// final exa = ExaApi(debugMode: true);
+///
+/// // Using explicit API key
+/// final exa = ExaApi(apiKey: 'your_api_key_here');
+///
+/// // Perform a search
+/// final results = await exa.search(
+///   query: 'latest AI research',
+///   type: SearchType.neural,
+///   numResults: 5,
+/// );
+/// ```
+class ExaApi {  /// Creates an ExaApi client instance
+  ///
+  /// [apiKey] - Your Exa API key. If not provided, will attempt to read from
+  ///            the `EXA_API_KEY` compile-time environment variable using
+  ///            `String.fromEnvironment('EXA_API_KEY')`.
+  /// [debugMode] - Enable debug logging for requests and responses (default: false)
+  ///
+  /// Throws an [AssertionError] if no API key is found in either the parameter
+  /// or compile-time environment variable.
+  ///
+  /// To set the environment variable at compile time:
+  /// - `dart run --define=EXA_API_KEY=your_key your_app.dart`
+  /// - `flutter run --dart-define=EXA_API_KEY=your_key`
+  ExaApi({String? apiKey, this.debugMode = false})
+    : apiKey = apiKey ?? const String.fromEnvironment('EXA_API_KEY'),
+      assert((apiKey ?? const String.fromEnvironment('EXA_API_KEY')).isNotEmpty, 
+        'API key must be provided either as a parameter or in the EXA_API_KEY environment variable.');
 
   final String apiKey;
   final bool debugMode;

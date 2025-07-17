@@ -40,14 +40,21 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
     super.initState();
     _queryController.text = 'Latest developments in AI';
     _urlController.text = 'https://arxiv.org/abs/1706.03762';
-    // Note: In a real app, you'd store the API key securely
-    _apiKeyController.text = 'YOUR_EXA_API_KEY_HERE';
+    // Note: In a real app, you'd store the API key securely or use environment variables
+    // The app will first try to use EXA_API_KEY environment variable
+    _apiKeyController.text = 'Enter API key or set EXA_API_KEY env var';
   }
 
   void _initializeExa() {
-    if (_apiKeyController.text.isNotEmpty &&
-        _apiKeyController.text != 'YOUR_EXA_API_KEY_HERE') {
-      _exa = ExaApi(apiKey: _apiKeyController.text, debugMode: true);
+    // Try environment variable first, then fall back to text field
+    try {
+      _exa = ExaApi(debugMode: true);
+    } catch (e) {
+      // If environment variable is not set, try using the text field value
+      if (_apiKeyController.text.isNotEmpty &&
+          _apiKeyController.text != 'Enter API key or set EXA_API_KEY env var') {
+        _exa = ExaApi(apiKey: _apiKeyController.text, debugMode: true);
+      }
     }
   }
 
@@ -86,8 +93,8 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
 
       final buffer = StringBuffer();
       buffer.writeln('🔍 Search Results for: "${_queryController.text}"');
-      buffer.writeln('Search Type: ${results.resolvedSearchType?.name}');
-      buffer.writeln('Total Results: ${results.results.length}');
+      buffer.writeln('Search Type: ${results.resolvedSearchType?.name ?? 'Unknown'}');
+      buffer.writeln('Total Results: ${results.results?.length ?? 0}');
 
       if (results.costDollars != null) {
         buffer.writeln(
@@ -97,16 +104,17 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
 
       buffer.writeln('\n' + '=' * 50 + '\n');
 
-      for (int i = 0; i < results.results.length; i++) {
-        final result = results.results[i];
-        buffer.writeln('${i + 1}. ${result.title}');
-        buffer.writeln('   URL: ${result.url}');
+      final resultsList = results.results ?? [];
+      for (int i = 0; i < resultsList.length; i++) {
+        final result = resultsList[i];
+        buffer.writeln('${i + 1}. ${result.title ?? 'No title'}');
+        buffer.writeln('   URL: ${result.url ?? 'No URL'}');
         buffer.writeln('   Author: ${result.author ?? 'Unknown'}');
         buffer.writeln(
           '   Score: ${result.score?.toStringAsFixed(3) ?? 'N/A'}',
         );
 
-        if (result.summary != null) {
+        if (result.summary != null && result.summary!.isNotEmpty) {
           buffer.writeln('   Summary: ${result.summary}');
         }
 
@@ -114,7 +122,7 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
           buffer.writeln('   Highlights: ${result.highlights!.join(' | ')}');
         }
 
-        if (result.text != null) {
+        if (result.text != null && result.text!.isNotEmpty) {
           final text = result.text!.length > 200
               ? '${result.text!.substring(0, 200)}...'
               : result.text!;
@@ -163,16 +171,18 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
 
       final buffer = StringBuffer();
       buffer.writeln('❓ Question: "${_queryController.text}"');
-      buffer.writeln('\n🤖 Answer: ${answer.answer}');
-      buffer.writeln('\n📚 Sources (${answer.citations.length}):');
+      buffer.writeln('\n🤖 Answer: ${answer.answer ?? 'No answer provided'}');
+      
+      final citationsList = answer.citations ?? [];
+      buffer.writeln('\n📚 Sources (${citationsList.length}):');
 
-      for (int i = 0; i < answer.citations.length; i++) {
-        final citation = answer.citations[i];
-        buffer.writeln('${i + 1}. ${citation.title}');
-        buffer.writeln('   URL: ${citation.url}');
+      for (int i = 0; i < citationsList.length; i++) {
+        final citation = citationsList[i];
+        buffer.writeln('${i + 1}. ${citation.title ?? 'No title'}');
+        buffer.writeln('   URL: ${citation.url ?? 'No URL'}');
         buffer.writeln('   Author: ${citation.author ?? 'Unknown'}');
 
-        if (citation.text != null) {
+        if (citation.text != null && citation.text!.isNotEmpty) {
           final text = citation.text!.length > 200
               ? '${citation.text!.substring(0, 200)}...'
               : citation.text!;
@@ -227,19 +237,20 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
 
       final buffer = StringBuffer();
       buffer.writeln('📄 Content for: ${_urlController.text}');
-      buffer.writeln('Request ID: ${contents.requestId}');
-      buffer.writeln('Total Results: ${contents.results.length}');
+      buffer.writeln('Request ID: ${contents.requestId ?? 'No request ID'}');
+      buffer.writeln('Total Results: ${contents.results?.length ?? 0}');
       buffer.writeln('\n' + '=' * 50 + '\n');
 
-      for (final result in contents.results) {
-        buffer.writeln('Title: ${result.title}');
-        buffer.writeln('URL: ${result.url}');
+      final resultsList = contents.results ?? [];
+      for (final result in resultsList) {
+        buffer.writeln('Title: ${result.title ?? 'No title'}');
+        buffer.writeln('URL: ${result.url ?? 'No URL'}');
         buffer.writeln('Author: ${result.author ?? 'Unknown'}');
         buffer.writeln(
           'Published: ${result.publishedDate?.toString() ?? 'Unknown'}',
         );
 
-        if (result.summary != null) {
+        if (result.summary != null && result.summary!.isNotEmpty) {
           buffer.writeln('\nSummary: ${result.summary}');
         }
 
@@ -250,7 +261,7 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
           }
         }
 
-        if (result.text != null) {
+        if (result.text != null && result.text!.isNotEmpty) {
           final text = result.text!.length > 500
               ? '${result.text!.substring(0, 500)}...'
               : result.text!;
@@ -304,20 +315,21 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
 
       final buffer = StringBuffer();
       buffer.writeln('🔗 Similar links to: ${_urlController.text}');
-      buffer.writeln('Request ID: ${similar.requestId}');
-      buffer.writeln('Total Results: ${similar.results.length}');
+      buffer.writeln('Request ID: ${similar.requestId ?? 'No request ID'}');
+      buffer.writeln('Total Results: ${similar.results?.length ?? 0}');
       buffer.writeln('\n' + '=' * 50 + '\n');
 
-      for (int i = 0; i < similar.results.length; i++) {
-        final result = similar.results[i];
-        buffer.writeln('${i + 1}. ${result.title}');
-        buffer.writeln('   URL: ${result.url}');
+      final resultsList = similar.results ?? [];
+      for (int i = 0; i < resultsList.length; i++) {
+        final result = resultsList[i];
+        buffer.writeln('${i + 1}. ${result.title ?? 'No title'}');
+        buffer.writeln('   URL: ${result.url ?? 'No URL'}');
         buffer.writeln('   Author: ${result.author ?? 'Unknown'}');
         buffer.writeln(
           '   Similarity Score: ${result.score?.toStringAsFixed(3) ?? 'N/A'}',
         );
 
-        if (result.summary != null) {
+        if (result.summary != null && result.summary!.isNotEmpty) {
           buffer.writeln('   Summary: ${result.summary}');
         }
 
@@ -325,7 +337,7 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
           buffer.writeln('   Highlights: ${result.highlights!.join(' | ')}');
         }
 
-        if (result.text != null) {
+        if (result.text != null && result.text!.isNotEmpty) {
           final text = result.text!.length > 200
               ? '${result.text!.substring(0, 200)}...'
               : result.text!;
@@ -376,10 +388,10 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
             child: TextField(
               controller: _apiKeyController,
               decoration: const InputDecoration(
-                labelText: 'Exa API Key',
+                labelText: 'Exa API Key (optional if EXA_API_KEY env var is set)',
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.key),
-                helperText: 'Get your API key from https://dashboard.exa.ai/',
+                helperText: 'Get your API key from https://dashboard.exa.ai/ or set EXA_API_KEY environment variable',
               ),
               obscureText: true,
             ),

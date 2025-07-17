@@ -69,10 +69,10 @@ class ContentsRequest {
 /// Status information for each requested URL
 @JsonSerializable()
 class ContentStatus {
-  const ContentStatus({required this.id, required this.status, this.error});
+  const ContentStatus({this.id, this.status, this.error});
 
-  final String id;
-  final String status;
+  final String? id;
+  final String? status;
   final Map<String, dynamic>? error;
 
   factory ContentStatus.fromJson(Map<String, dynamic> json) =>
@@ -84,15 +84,15 @@ class ContentStatus {
 @JsonSerializable()
 class ContentsResponse {
   const ContentsResponse({
-    required this.requestId,
-    required this.results,
+    this.requestId,
+    this.results,
     this.context,
     this.statuses,
     this.costDollars,
   });
 
-  final String requestId;
-  final List<SearchResult> results;
+  final String? requestId;
+  final List<SearchResult>? results;
   final String? context;
   final List<ContentStatus>? statuses;
   final CostDollars? costDollars;

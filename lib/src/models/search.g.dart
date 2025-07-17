@@ -258,11 +258,11 @@ const _$SearchCategoryEnumMap = {
 CostBreakdown _$CostBreakdownFromJson(Map<String, dynamic> json) =>
     $checkedCreate('CostBreakdown', json, ($checkedConvert) {
       final val = CostBreakdown(
-        search: $checkedConvert('search', (v) => (v as num).toDouble()),
-        contents: $checkedConvert('contents', (v) => (v as num).toDouble()),
+        search: $checkedConvert('search', (v) => (v as num?)?.toDouble()),
+        contents: $checkedConvert('contents', (v) => (v as num?)?.toDouble()),
         breakdown: $checkedConvert(
           'breakdown',
-          (v) => (v as Map<String, dynamic>).map(
+          (v) => (v as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, (e as num).toDouble()),
           ),
         ),
@@ -314,15 +314,15 @@ Map<String, dynamic> _$CostDollarsToJson(CostDollars instance) =>
 SearchResult _$SearchResultFromJson(Map<String, dynamic> json) =>
     $checkedCreate('SearchResult', json, ($checkedConvert) {
       final val = SearchResult(
-        title: $checkedConvert('title', (v) => v as String),
-        url: $checkedConvert('url', (v) => v as String),
+        title: $checkedConvert('title', (v) => v as String?),
+        url: $checkedConvert('url', (v) => v as String?),
         publishedDate: $checkedConvert(
           'publishedDate',
           (v) => v == null ? null : DateTime.parse(v as String),
         ),
         author: $checkedConvert('author', (v) => v as String?),
         score: $checkedConvert('score', (v) => (v as num?)?.toDouble()),
-        id: $checkedConvert('id', (v) => v as String),
+        id: $checkedConvert('id', (v) => v as String?),
         image: $checkedConvert('image', (v) => v as String?),
         favicon: $checkedConvert('favicon', (v) => v as String?),
         text: $checkedConvert('text', (v) => v as String?),
@@ -368,15 +368,15 @@ Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
 SearchResponse _$SearchResponseFromJson(Map<String, dynamic> json) =>
     $checkedCreate('SearchResponse', json, ($checkedConvert) {
       final val = SearchResponse(
-        requestId: $checkedConvert('requestId', (v) => v as String),
+        requestId: $checkedConvert('requestId', (v) => v as String?),
         resolvedSearchType: $checkedConvert(
           'resolvedSearchType',
           (v) => $enumDecodeNullable(_$SearchTypeEnumMap, v),
         ),
         results: $checkedConvert(
           'results',
-          (v) => (v as List<dynamic>)
-              .map((e) => SearchResult.fromJson(e as Map<String, dynamic>))
+          (v) => (v as List<dynamic>?)
+              ?.map((e) => SearchResult.fromJson(e as Map<String, dynamic>))
               .toList(),
         ),
         searchType: $checkedConvert(
@@ -398,7 +398,7 @@ Map<String, dynamic> _$SearchResponseToJson(SearchResponse instance) =>
     <String, dynamic>{
       'requestId': instance.requestId,
       'resolvedSearchType': _$SearchTypeEnumMap[instance.resolvedSearchType],
-      'results': instance.results.map((e) => e.toJson()).toList(),
+      'results': instance.results?.map((e) => e.toJson()).toList(),
       'searchType': _$SearchTypeEnumMap[instance.searchType],
       'context': instance.context,
       'costDollars': instance.costDollars?.toJson(),
