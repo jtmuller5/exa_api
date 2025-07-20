@@ -1,4 +1,4 @@
-## 1.1.0
+## 1.1.1
 
 🟩 **[Added]**: Environment variable support for API key via `EXA_API_KEY` using `String.fromEnvironment()`
 

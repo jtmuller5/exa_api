@@ -8,10 +8,9 @@
   </a>
 </p>
 
-
 <p align="center">
   <a href="https://joemuller.com">Developer Blog</a> •
-    <a href="https://sapiblabs.com">Sapid Labs</a> •
+    <a href="https://sapidlabs.com">Sapid Labs</a> •
   <a href="https://github.com/jtmuller5/exa_api/">GitHub Repo</a> •
   <a href="https://pub.dev/packages/exa_api/install">Pub.dev</a>
 </p>
@@ -37,6 +36,7 @@ dependencies:
 2. Set up authentication (choose one method):
 
 ### Option 1: Environment Variable (Recommended)
+
 Set the `EXA_API_KEY` environment variable at compile time:
 
 ```bash
@@ -62,6 +62,7 @@ final exa = ExaApi(
 ```
 
 ### Option 2: Direct API Key
+
 Initialize the client with an explicit API key:
 
 ```dart
