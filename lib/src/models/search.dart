@@ -242,11 +242,7 @@ class SearchRequest {
 /// Cost breakdown information
 @JsonSerializable()
 class CostBreakdown {
-  const CostBreakdown({
-    this.search,
-    this.contents,
-    this.breakdown,
-  });
+  const CostBreakdown({this.search, this.contents, this.breakdown});
 
   final double? search;
   final double? contents;
@@ -299,6 +295,8 @@ class SearchResult {
 
   final String? title;
   final String? url;
+
+  @JsonKey(fromJson: dateTimeFromJson, toJson: dateTimeToJson)
   final DateTime? publishedDate;
   final String? author;
   final double? score;
@@ -351,4 +349,22 @@ class ExaApiException implements Exception {
   @override
   String toString() =>
       'ExaApiException: $message${statusCode != null ? ' (Status: $statusCode)' : ''}';
+}
+
+DateTime? dateTimeFromJson(String? dateTime) {
+  if (dateTime == null) return null;
+  try {
+    return DateTime.parse(dateTime);
+  } catch (_) {
+    return null;
+  }
+}
+
+String? dateTimeToJson(DateTime? dateTime) {
+  if (dateTime == null) return null;
+  try {
+    return dateTime.toIso8601String();
+  } catch (_) {
+    return null;
+  }
 }

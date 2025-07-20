@@ -29,6 +29,8 @@
 
 🟪 **[Fixed]**: Proper error handling in example applications for nullable response fields
 
+🟪 **[Fixed]**: Add more robust handling for improper date formats
+
 ### Migration from 1.0.x
 When upgrading from version 1.0.x, update your code to handle nullable response fields:
 

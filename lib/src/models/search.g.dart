@@ -318,7 +318,7 @@ SearchResult _$SearchResultFromJson(Map<String, dynamic> json) =>
         url: $checkedConvert('url', (v) => v as String?),
         publishedDate: $checkedConvert(
           'publishedDate',
-          (v) => v == null ? null : DateTime.parse(v as String),
+          (v) => dateTimeFromJson(v as String?),
         ),
         author: $checkedConvert('author', (v) => v as String?),
         score: $checkedConvert('score', (v) => (v as num?)?.toDouble()),
@@ -351,7 +351,7 @@ Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
     <String, dynamic>{
       'title': instance.title,
       'url': instance.url,
-      'publishedDate': instance.publishedDate?.toIso8601String(),
+      'publishedDate': dateTimeToJson(instance.publishedDate),
       'author': instance.author,
       'score': instance.score,
       'id': instance.id,

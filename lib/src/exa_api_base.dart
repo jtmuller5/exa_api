@@ -55,7 +55,7 @@ class ExaApi {  /// Creates an ExaApi client instance
   /// - `dart run --define=EXA_API_KEY=your_key your_app.dart`
   /// - `flutter run --dart-define=EXA_API_KEY=your_key`
   ExaApi({String? apiKey, this.debugMode = false})
-    : apiKey = apiKey ?? const String.fromEnvironment('EXA_API_KEY'),
+    : apiKey = apiKey ?? const String.fromEnvironment('EXA_API_KEY', defaultValue: ''),
       assert((apiKey ?? const String.fromEnvironment('EXA_API_KEY')).isNotEmpty, 
         'API key must be provided either as a parameter or in the EXA_API_KEY environment variable.');
 

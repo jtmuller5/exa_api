@@ -81,7 +81,7 @@ class _ExaApiDemoState extends State<ExaApiDemo> {
       final results = await _exa!.searchAndContents(
         query: _queryController.text,
         type: SearchType.neural,
-        numResults: 3,
+        numResults: 12,
         text: true,
         highlights: const HighlightsConfig(
           numSentences: 2,
